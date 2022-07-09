@@ -1,0 +1,40 @@
+.container {
+    @apply flex flex-col items-center
+}
+
+.box {
+    border: solid;
+    border-image-slice: 1;
+    border-width: 5px;
+    border-image-source: 
+    linear-gradient(
+        60deg,
+        #b16ec4,
+        #5f97b9
+    );
+}
+
+.nora{
+    font-family: "Copperplate";
+    font-weight: bold;
+    background-image: linear-gradient(
+    60deg,
+    #3bacb5,
+    #6867c5
+    );
+    -webkit-background-clip: text;
+    -moz-background-clip: text;
+    -webkit-text-fill-color: transparent; 
+    -moz-text-fill-color: transparent;
+}
+
+
+
+
+.background {
+background-image: linear-gradient(
+    to bottom right,
+    #3bacb5,
+    #6867c5
+)
+}
