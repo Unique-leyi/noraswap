@@ -2,7 +2,7 @@ import React from 'react';
 
 const Footer = () => {
     return (
-      <footer className="mt-6">
+      <footer className="mt-6 font-montserrat">
         <div className="flex justify-center items-start my-2">
             <a className="footer-links">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512" className="footer-icons" fill="currentColor">
