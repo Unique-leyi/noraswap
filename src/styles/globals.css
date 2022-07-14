@@ -1,3 +1,82 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+  :root {
+    background: transparent;
+  }
+
+  body {
+    background-image: url("/img/gradient_bg.svg");
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    @apply bg-primary;
+  }
+
+  body::-webkit-scrollbar {
+    @apply w-3;
+  }
+
+  body::-webkit-scrollbar-track {
+    @apply shadow-sm;
+  }
+
+  body::-webkit-scrollbar-thumb {
+    @apply bg-gray-800 outline-1 rounded-lg outline-gray-700;
+  }
+}
+
+@layer components {
+  * {
+    @apply transition-colors ease-out;
+  }
+
+  .body_img {
+    background-image: url("/img/gradient_bg.svg");
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+  }
+
+  .action-btn {
+    @apply rounded-lg border-2 font-bold text-white border-siteblue bg-gray-700 p-1 cursor-pointer text-sm;
+  }
+
+  .token-span {
+    @apply my-4 mx-2  py-2 hover:bg-gray-800 cursor-pointer;
+  }
+
+  .active-list {
+    @apply bg-gray-800;
+  }
+
+  .token-list {
+    @apply p-3 text-white font-semibold;
+  }
+
+  .token-item {
+    @apply uppercase text-gray-400 font-semibold;
+  }
+
+  .selling-text {
+    @apply uppercase font-bold text-gray-500 text-sm;
+  }
+
+  .selling-icon {
+    @apply h-6 w-6 text-gray-500 mx-2;
+  }
+
+  .selling-list {
+    @apply animate-pulse bg-primary py-4 px-5 my-5 rounded-lg cursor-pointer relative active:border-2 active:border-sky-600 hover:border-2 hover:border-sky-600 overflow-hidden;
+  }
+
+  .footer-links {
+    @apply font-semibold text-white mx-8 text-sm;
+  }
+
+  .footer-icons {
+    @apply text-center mx-auto  w-10 h-10 my-2 border-2 p-2 border-siteblue text-siteblue  rounded-full hover:bg-sky-500 hover:text-primary hover:border-none;
+  }
+}

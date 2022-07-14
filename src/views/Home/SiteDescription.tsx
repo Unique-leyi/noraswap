@@ -66,7 +66,7 @@ const SiteDescription = () => {
 
     return (
         <div className="w-full text-center pt-2">
-            <div className="hero">
+            {/* <div className="hero">
                 <div className="text-center hero-content">
                     <div>
 
@@ -90,7 +90,7 @@ const SiteDescription = () => {
                             }
                         </div>
                     </div>
-                </div>
+                </div> */}
             </div>
         
     )

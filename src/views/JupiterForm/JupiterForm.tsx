@@ -1,6 +1,7 @@
 import React, { FunctionComponent, useEffect, useMemo, useState } from "react";
 import { PublicKey, Transaction } from "@solana/web3.js";
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
+import { WalletMultiButton } from '@solana/wallet-adapter-react-ui';
 
 import { INPUT_MINT_ADDRESS, OUTPUT_MINT_ADDRESS } from "../../constants";
 
@@ -10,7 +11,7 @@ const style = {
   wrapper: `w-screen flex items-center justify-center mt-14`,
   content: `bg-[#191B1F] w-[30rem] rounded-2xl p-4`,
   formHeader: `px-2 flex items-center justify-between font-semibold text-xl`,
-  transferPropContainer: `bg-[#20242A] my-2 rounded-2xl p-2 text-2lgs  border border-[#20242A] hover:border-[#41444F]  flex justify-between`,
+  transferPropContainer: `block w-5/12 bg-transparent px-2 py-3 text-[1.1rem] mx-1 font-bold cursor-pointer uppercase hover:bg-secondary-100 hover:rounded-lg outline-none border-none focus:border-none focus:ring-transparent`,
   transferPropInput: `bg-transparent placeholder:text-[#B2B9D2] outline-none mb-6 w-full text-2xl`,
   currencySelector: `flex w-1/4`,
   currencySelectorContent: `w-full h-min flex justify-between items-center bg-[#2D2F36] hover:bg-[#41444F] rounded-2xl text-xl font-medium cursor-pointer p-2 mt-[-0.2rem]`,
@@ -18,6 +19,7 @@ const style = {
   currencySelectorTicker: `mx-2`,
   currencySelectorArrow: `text-lg`,
   confirmButton: `bg-[#2172E5] my-2 rounded-2xl py-6 px-8 text-xl font-semibold flex items-center justify-center cursor-pointer border border-[#2172E5] hover:border-[#234169]`,
+  optionSelector: `bg-secondary-100 font-montserrat py-4 my-6 hover:bg-gray-300 text-[1rem] cursor-pointer`,
 }
 
 interface IJupiterFormProps {}
@@ -102,145 +104,210 @@ const JupiterForm: FunctionComponent<IJupiterFormProps> = (props) => {
   }, [formValue.inputMint?.toBase58(), formValue.outputMint?.toBase58()]);
 
   if (!loaded) {
-    return <div className="text-lg font-semibold text-[0.9rem]">Loading Noraswap...</div>;
+    return <div className="my-16 flex flex-col justify-center items-center">
+      <img src="img/noralogo.png" className="animate-spin w-4/12 lg:w-40 mx-1"/>
+      <span className="my-4 text-lg font-semibold text-[0.9rem]">Loading Noraswap...</span>
+      </div>;
   }
 
   return (
-    <div className={style.content}>
-    <div className="max-w-full md:max-w-lg">
-      <div className="mb-2">
-        <label htmlFor="inputMint" className="block text-sm font-medium">
-          Input token
-        </label>
-        <select
-          id="inputMint"
-          name="inputMint"
-          className={style.transferPropContainer}
-          value={formValue.inputMint?.toBase58()}
-          onChange={(e) => {
-            const pbKey = new PublicKey(e.currentTarget.value);
-            if (pbKey) {
-              setFormValue((val) => ({
-                ...val,
-                inputMint: pbKey,
-              }));
-            }
-          }}
-        >
-          {Array.from(routeMap.keys()).map((tokenMint) => {
-            return (
-              <option key={tokenMint} value={tokenMint}>
-                {tokenMap.get(tokenMint)?.name || "unknown"}
-              </option>
-            );
-          })}
-        </select>
+    <main className="my-20 bg-secondary-100 mx-3 rounded-2xl p-7 md:w-10/12 md:mx-auto lg:w-5/12 lg:mx-auto shadow-md relative">
+    <section className="my-1">
+      {/* Top Action */}
+      <div className="shadow-sm my-6 flex justify-between items-center">
+        <a className="action-btn flex justify-between items-center">
+            <svg xmlns="http://www.w3.org/2000/svg" className="inline-block h-5 w-5 text-white font-bold" fill="none" viewBox="0 0 24 24"   stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4" />
+            </svg>
+            <span className="mx-1.5 text-xs">0.1%</span>
+        </a>
+        <button className={`${
+            isLoading ? "opacity-50 cursor-not-allowed" : ""
+          } action-btn`}
+          type="button"
+          onClick={fetchRoute}
+          disabled={isLoading}
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" className={`${ isLoading && ( "animate-spin") } inline-block h-5 w-5 text-white font-bold `}fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+            </svg>
+        </button>
       </div>
 
-      <div className="mb-2">
-        <label htmlFor="outputMint" className="block text-sm font-medium">
-          Output token
-        </label>
-        <select
-          id="outputMint"
-          name="outputMint"
-          className={style.transferPropContainer}
-          value={formValue.outputMint?.toBase58()}
-          onChange={(e) => {
-            const pbKey = new PublicKey(e.currentTarget.value);
-            if (pbKey) {
-              setFormValue((val) => ({
-                ...val,
-                outputMint: pbKey,
-              }));
-            }
-          }}
-        >
-          {validOutputMints.map((tokenMint) => {
-            return (
-              <option key={tokenMint} value={tokenMint}>
-                {tokenMap.get(tokenMint)?.name || "unknown"}
-              </option>
-            );
-          })}
-        </select>
-      </div>
-      
+      {/* /Top Action */}
 
-      <div>
-        <label htmlFor="amount" className="block text-sm font-medium">
-          Input Amount ({inputTokenInfo?.symbol})
-        </label>
-        <div className="mt-1">
-          <input
-            name="amount"
-            id="amount"
-            className={style.transferPropContainer}//className="shadow-sm bg-neutral p-2 focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
-            value={formValue.amount}
-            type="text"
-            pattern="[0-9]*"
-            onInput={(e: any) => {
-              let newValue = Number(e.target?.value || 0);
-              newValue = Number.isNaN(newValue) ? 0 : newValue;
-              setFormValue((val) => ({
-                ...val,
-                amount: Math.max(newValue, 0),
-              }));
-            }}
-          />
-        </div>
-      </div>
+      {/* Token Exchanges */}
+       {/* Input token exchaneg*/}
+        <div className="my-1">
+            <div className="flex justify-between items-center my-2 mx-2">
+                <h4 className="font-bold text-white">You pay:</h4>
+                <h4 className="flex justify-between items-center font-bold text-white">Balance: <span className="font-bold text-lg ml-2 text-gray-600 ">0</span></h4>
+            </div>
+          </div>
 
-      <div className="flex justify-center">
-        <button
+            <div className="my-1">
+                <label className="w-full my-2 py-4 px-2  bg-primary flex justify-between items-center rounded-md">
+                    
+                    <select
+                        id="inputMint"
+                        name="inputMint"
+                        className={style.transferPropContainer}
+                        value={formValue.inputMint?.toBase58()}
+                        onChange={(e) => {
+                          const pbKey = new PublicKey(e.currentTarget.value);
+                          if (pbKey) {
+                            setFormValue((val) => ({
+                              ...val,
+                              inputMint: pbKey,
+                            }));
+                          }
+                        }}
+                      >
+                        {Array.from(routeMap.keys()).map((tokenMint) => {
+                          return (
+                            <option className={style.optionSelector} key={tokenMint} value={tokenMint}>
+                              {tokenMap.get(tokenMint)?.name || "unknown"}
+                            </option>
+                          );
+                        })}
+                      </select>
+
+                    <input type="text" 
+                    className="w-8/12 text-right bg-transparent border-none outline-none focus:outline-none  focus:border-none focus:ring-transparent text-gray-500 font-bold text-xl px-4"
+                    name="amount"
+                    id="amount"
+                    value={formValue.amount} 
+                    placeholder="1"
+                    pattern="[0-9]*"
+                    onInput={(e: any) => {
+                      let newValue = Number(e.target?.value || 0);
+                      newValue = Number.isNaN(newValue) ? 0 : newValue;
+                      setFormValue((val) => ({
+                        ...val,
+                        amount: Math.max(newValue, 0),
+                      }));
+                    }}
+                    />
+                </label>
+            </div>
+
+          {/* /Input token exchange */}
+
+          
+          {/* Refresh Rate */}
+            
+          <div className="flex justify-center items-center">
+
+              <button
           className={`${
             isLoading ? "opacity-50 cursor-not-allowed" : ""
-          } inline-flex items-center px-4 py-2 mt-4 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500`}
+          } text-white py-4 `}
           type="button"
           onClick={fetchRoute}
           disabled={isLoading}
         >
-          {isLoading && (
-            <div
-              className={`${styles.loader} mr-4 ease-linear rounded-full border-8 border-t-8 border-gray-200 h-24 w-24`}
-            ></div>
-          )}
-          Refresh rate
+          
+
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" className={`${ isLoading && ( "animate-bounce") } "w-10 h-10 font-bold cursor-pointer  motion-safe:animate-bounce" `}><path d="M5 12a1 1 0 102 0V6.414l1.293 1.293a1 1 0 001.414-1.414l-3-3a1 1 0 00-1.414 0l-3 3a1 1 0 001.414 1.414L5 6.414V12zM15 8a1 1 0 10-2 0v5.586l-1.293-1.293a1 1 0 00-1.414 1.414l3 3a1 1 0 001.414 0l3-3a1 1 0 00-1.414-1.414L15 13.586V8z"></path></svg> 
+
+          
         </button>
+                
+        </div>
+              
+
+
+          {/* /Refresh Rate */}
+
+            
+
+          {/* Output Token exchange */}
+
+          <div className="my-1">
+                <div className="flex justify-between items-center mx-2">
+                    <h4 className="font-bold text-white">You recieve:</h4>
+                    <h4 className="flex justify-between items-center font-bold text-white ">Balance: <span className="font-bold text-lg text-gray-600 ml-2">0</span></h4>
+                </div>
+            </div>
+
+        {routes?.[0] &&
+        (() => {
+          const route = routes[0];
+          if (route) {
+            return (
+              <div>
+                <div className="my-1">
+                <label className="w-full my-2 py-4 px-2  bg-primary flex justify-between items-center rounded-md">
+                    
+                    <select
+                      id="outputMint"
+                      name="outputMint"
+                      className={style.transferPropContainer}
+                      value={formValue.outputMint?.toBase58()}
+                      onChange={(e) => {
+                        const pbKey = new PublicKey(e.currentTarget.value);
+                        if (pbKey) {
+                          setFormValue((val) => ({
+                            ...val,
+                            outputMint: pbKey,
+                          }));
+                        }
+                      }}
+                    >
+                      {validOutputMints.map((tokenMint) => {
+                        return (
+                          <option key={tokenMint} value={tokenMint} className={style.optionSelector}>
+                            {tokenMap.get(tokenMint)?.name || "unknown"}
+                          </option>
+                        );
+                      })}
+                    </select>
+                    
+                  <div className="w-8/12 text-right bg-transparent outline-none  text-gray-500 font-bold text-xl px-4">
+                    {" "}
+                    {(route.outAmount || 0) /
+                      10 ** (outputTokenInfo?.decimals || 1)}{" "}
+                    {outputTokenInfo?.symbol}
+                </div>
+                </label>
+            </div>
+
+
+          </div>
+            );
+          }
+        })()}
+            
+
+          {/* /Output Token exchange */}
+
+      
+      {/* Wallet Button */}
+
+      <div className="my-6 flex justify-center items-center">
+          <WalletMultiButton className="w-full mx-6 md:mx-auto md:w-7/12 font-bold text-lg text-white uppercase rounded-full py-2 px-3 bg-gradient-to-r from-siteblue to-sitepurple shadow-lg transform transition-colors duration-1000 ease-in-out  shadow-cyan-500/50 hover:shadow-cyan-500/70 xs:text-[1rem]"/>
       </div>
 
-      <div className="text-lg font-semibold text-[0.9rem]">Total routes: {routes?.length}</div>
+      {/* /Wallet Button*/}
 
       {routes?.[0] &&
         (() => {
           const route = routes[0];
           if (route) {
             return (
-              <div>
-                <div className="text-lg font-semibold text-[0.9rem]">
-                  Best route info :{" "}
-                  {route.marketInfos?.map((info) => info.label)}
-                </div>
-                <div className="text-lg font-semibold text-[0.9rem]">
-                  Output:{" "}
-                  {(route.outAmount || 0) /
-                    10 ** (outputTokenInfo?.decimals || 1)}{" "}
-                  {outputTokenInfo?.symbol}
-                </div>
-              </div>
-            );
-          }
-        })()}
+            <div>   
+              <div className="my-10 relative">
+                <ul className="list-none my-14">
+                    <a className="bg-sitepurple  absolute top-2 z-10 right-0 py-1 px-2 rounded-md text-white font-bold">Best Price</a>
 
-      <div className="flex justify-center mt-4">
-        <button
-          type="button"
-          disabled={isSubmitting}
-          onClick={async () => {
+              <button
+                    type="button"
+                    disabled={isSubmitting}
+                    onClick={async () => {
             try {
               if (
                 !isLoading &&
-                routes?.[0] &&
+                routes?.[0] && 
                 wallet.publicKey &&
                 wallet.signAllTransactions
               ) {
@@ -284,13 +351,39 @@ const JupiterForm: FunctionComponent<IJupiterFormProps> = (props) => {
             }
             setIsSubmitting(false);
           }}
-          className="inline-flex items-center px-4 py-2 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+          className="w-full px-4 py-4  focus:ring-indigo-500 selling-list  border-2 border-sky-600 "
         >
-          {isSubmitting ? "Swapping.." : "Swap Best Route"}
+          {/* {isSubmitting ? "Swapping.." : "Swap Best Route"} */}
+
+          <div className="my-1">
+                            <h4 className="flex justify- items-center text-white font-bold text-lg">
+                              {" "}
+                  {route.marketInfos?.map((info) => info.label)}</h4>
+                        </div>
+
+                        <div className="flex justify-start items-center">
+                            <span className="selling-text">Total routes:  {routes?.length}</span>
+                       </div>
         </button>
-      </div>
-    </div>
-    </div>
+
+
+                    </ul>
+                  </div>
+              
+
+
+          </div>
+            );
+          }
+        })()}
+
+
+
+      {/* /Token Exchanges */}
+
+     
+    </section>
+    </main>
   );
 };
 

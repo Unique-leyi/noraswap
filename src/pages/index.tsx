@@ -10,7 +10,7 @@ const Index: NextPage = (props) => {
         <title>Nora Swap</title>
         <meta
           name="description"
-          content="This site will fly high 🦤"
+          content="Nora Swap, Nora Currency Swap, Swap Nora"
         />
       </Head>
       <Home />
