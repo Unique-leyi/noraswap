@@ -11,8 +11,8 @@ const style = {
   wrapper: `w-screen flex items-center justify-center mt-14`,
   content: `bg-[#191B1F] w-[30rem] rounded-2xl p-4`,
   formHeader: `px-2 flex items-center justify-between font-semibold text-xl`,
-  transferPropContainer: `block w-5/12 bg-transparent px-2 py-3 text-[1.1rem] mx-1 font-bold cursor-pointer uppercase hover:bg-secondary-100 hover:rounded-lg outline-none border-none focus:border-none focus:ring-transparent`,
-  transferPropInput: `bg-transparent placeholder:text-[#B2B9D2] outline-none mb-6 w-full text-2xl`,
+  transferPropContainer: `block w-5/12 bg-transparent px-2 py-3 text-[1.1rem] mx-1 font-bold cursor-pointer uppercase hover:bg-secondary-100 rounded-lg hover:rounded-lg outline-none border-none focus:border-none focus:ring-transparent font-montserrat hover:bg-gray-300 cursor-pointer`,
+  transferPropInput: `bg-transparent placeholder:text-[#B2B9D2] outline-none mb-6 w-full text-2xl font-montserrat`,
   currencySelector: `flex w-1/4`,
   currencySelectorContent: `w-full h-min flex justify-between items-center bg-[#2D2F36] hover:bg-[#41444F] rounded-2xl text-xl font-medium cursor-pointer p-2 mt-[-0.2rem]`,
   currencySelectorIcon: `flex items-center`,
@@ -119,7 +119,7 @@ const JupiterForm: FunctionComponent<IJupiterFormProps> = (props) => {
             <svg xmlns="http://www.w3.org/2000/svg" className="inline-block h-5 w-5 text-white font-bold" fill="none" viewBox="0 0 24 24"   stroke="currentColor" stroke-width="2">
             <path stroke-linecap="round" stroke-linejoin="round" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4" />
             </svg>
-            <span className="mx-1.5 text-xs">0.1%</span>
+            <span className="mx-1.5 font-montserrat text-xs">0.1%</span>
         </a>
         <button className={`${
             isLoading ? "opacity-50 cursor-not-allowed" : ""
@@ -139,7 +139,7 @@ const JupiterForm: FunctionComponent<IJupiterFormProps> = (props) => {
       {/* Token Exchanges */}
        {/* Input token exchaneg*/}
         <div className="my-1">
-            <div className="flex justify-between items-center my-2 mx-2">
+            <div className="flex justify-between items-center my-2 mx-2 font-montserrat">
                 <h4 className="font-bold text-white">You pay:</h4>
                 <h4 className="flex justify-between items-center font-bold text-white">Balance: <span className="font-bold text-lg ml-2 text-gray-600 ">0</span></h4>
             </div>
@@ -165,7 +165,7 @@ const JupiterForm: FunctionComponent<IJupiterFormProps> = (props) => {
                       >
                         {Array.from(routeMap.keys()).map((tokenMint) => {
                           return (
-                            <option className={style.optionSelector} key={tokenMint} value={tokenMint}>
+                            <option key={tokenMint} value={tokenMint}>
                               {tokenMap.get(tokenMint)?.name || "unknown"}
                             </option>
                           );
@@ -173,7 +173,7 @@ const JupiterForm: FunctionComponent<IJupiterFormProps> = (props) => {
                       </select>
 
                     <input type="text" 
-                    className="w-8/12 text-right bg-transparent border-none outline-none focus:outline-none  focus:border-none focus:ring-transparent text-gray-500 font-bold text-xl px-4"
+                    className="w-8/12 text-right bg-transparent border-none outline-none focus:outline-none  focus:border-none focus:ring-transparent text-gray-500 font-bold text-xl px-4 font-montserrat"
                     name="amount"
                     id="amount"
                     value={formValue.amount} 
@@ -224,7 +224,7 @@ const JupiterForm: FunctionComponent<IJupiterFormProps> = (props) => {
           {/* Output Token exchange */}
 
           <div className="my-1">
-                <div className="flex justify-between items-center mx-2">
+                <div className="flex justify-between items-center mx-2 font-montserrat">
                     <h4 className="font-bold text-white">You recieve:</h4>
                     <h4 className="flex justify-between items-center font-bold text-white ">Balance: <span className="font-bold text-lg text-gray-600 ml-2">0</span></h4>
                 </div>
@@ -236,7 +236,7 @@ const JupiterForm: FunctionComponent<IJupiterFormProps> = (props) => {
           if (route) {
             return (
               <div>
-                <div className="my-1">
+                <div className="my-1 font-montserrat">
                 <label className="w-full my-2 py-4 px-2  bg-primary flex justify-between items-center rounded-md">
                     
                     <select
@@ -256,14 +256,14 @@ const JupiterForm: FunctionComponent<IJupiterFormProps> = (props) => {
                     >
                       {validOutputMints.map((tokenMint) => {
                         return (
-                          <option key={tokenMint} value={tokenMint} className={style.optionSelector}>
+                          <option key={tokenMint} value={tokenMint}>
                             {tokenMap.get(tokenMint)?.name || "unknown"}
                           </option>
                         );
                       })}
                     </select>
                     
-                  <div className="w-8/12 text-right bg-transparent outline-none  text-gray-500 font-bold text-xl px-4">
+                  <div className="w-8/12 text-right bg-transparent font-montserrat outline-none  text-gray-500 font-bold text-xl px-4">
                     {" "}
                     {(route.outAmount || 0) /
                       10 ** (outputTokenInfo?.decimals || 1)}{" "}
@@ -285,7 +285,7 @@ const JupiterForm: FunctionComponent<IJupiterFormProps> = (props) => {
       {/* Wallet Button */}
 
       <div className="my-6 flex justify-center items-center">
-          <WalletMultiButton className="w-full mx-6 md:mx-auto md:w-7/12 font-bold text-lg text-white uppercase rounded-full py-2 px-3 bg-gradient-to-r from-siteblue to-sitepurple shadow-lg transform transition-colors duration-1000 ease-in-out  shadow-cyan-500/50 hover:shadow-cyan-500/70 xs:text-[1rem]"/>
+          <WalletMultiButton className="font-montserrat w-full mx-6 md:mx-auto md:w-7/12 font-bold text-lg text-white uppercase rounded-full py-2 px-3 bg-gradient-to-r from-siteblue to-sitepurple shadow-lg transform transition-colors duration-1000 ease-in-out  shadow-cyan-500/50 hover:shadow-cyan-500/70 xs:text-[1rem]"/>
       </div>
 
       {/* /Wallet Button*/}
@@ -296,7 +296,7 @@ const JupiterForm: FunctionComponent<IJupiterFormProps> = (props) => {
           if (route) {
             return (
             <div>   
-              <div className="my-10 relative">
+              <div className="my-10 relative font-montserrat">
                 <ul className="list-none my-14">
                     <a className="bg-sitepurple  absolute top-2 z-10 right-0 py-1 px-2 rounded-md text-white font-bold">Best Price</a>
 
@@ -355,13 +355,13 @@ const JupiterForm: FunctionComponent<IJupiterFormProps> = (props) => {
         >
           {/* {isSubmitting ? "Swapping.." : "Swap Best Route"} */}
 
-          <div className="my-1">
+          <div className="my-1 font-montserrat">
                             <h4 className="flex justify- items-center text-white font-bold text-lg">
                               {" "}
                   {route.marketInfos?.map((info) => info.label)}</h4>
                         </div>
 
-                        <div className="flex justify-start items-center">
+                        <div className="flex justify-start items-center font-montserrat">
                             <span className="selling-text">Total routes:  {routes?.length}</span>
                        </div>
         </button>
