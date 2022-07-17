@@ -33,6 +33,50 @@
     @apply transition-colors ease-out;
   }
 
+  .wallet-adapter-button-trigger {
+    @apply bg-transparent font-montserrat w-full mx-6 md:mx-auto md:w-7/12 !font-bold !text-lg !text-white !uppercase  py-2 px-3 !bg-gradient-to-r !from-siteblue !to-sitepurple !shadow-lg !transform !transition-colors !duration-1000 !ease-in-out  !shadow-cyan-500/50 hover:!shadow-cyan-500/70 xs:!text-[1rem];
+  }
+
+  .wallet-adapter-button {
+    @apply !rounded-full !text-lg !bg-transparent hover:!shadow-cyan-500/70 !cursor-pointer !font-montserrat hover:!bg-transparent;
+  }
+
+  .swap-btn {
+    @apply rounded-full  bg-transparent  cursor-pointer font-montserrat w-11/12 mx-auto block md:mx-auto md:w-7/12 font-bold text-lg text-white uppercase  py-3 px-1 bg-gradient-to-r from-siteblue to-sitepurple shadow-lg transform transition-colors duration-1000 ease-in-out  shadow-cyan-500/50 hover:shadow-cyan-500/70 xs:text-[1.1rem];
+  }
+
+  .select-box {
+    @apply cursor-pointer relative flex w-[25rem] flex-col font-montserrat;
+  }
+
+  .radio {
+    @apply hidden;
+  }
+
+  .options-container {
+    @apply bg-gray-900 text-white min-h-max w-full opacity-5 transition-all py-2 px-3 duration-300 rounded-md overflow-hidden order-1;
+  }
+
+  .selected {
+    @apply py-3 px-3 font-medium bg-gray-900 rounded-md mb-2 text-white relative order-none after:content-[""] after:bg-arrow-down after:bg-contain after:bg-no-repeat after:absolute after:h-8 after:w-10 after:right-2.5 after:top-1 after:transition-all after:duration-300 after:font-bold after:cursor-pointer after:my-1;
+  }
+
+  .active {
+    @apply max-h-15 opacity-5 overflow-y-scroll mt-4;
+  }
+
+  .options-container::-webkit-scrollbar {
+    @apply w-2 bg-purple-700 rounded-t-none rounded-l-md rounded-b-md rounded-r-none;
+  }
+
+  .options-container::-webkit-scrollbar-thumb {
+    @apply w-2 bg-purple-600 rounded-t-none rounded-l-md rounded-b-md rounded-r-none;
+  }
+
+  .input-box {
+    @apply w-full py-2 px-4 text-[1rem] absolute rounded-t-none rounded-l-md rounded-b-md rounded-r-none z-10 border-2 border-gray-700 opacity-0 pointer-events-auto transition-all duration-100;
+  }
+
   .body_img {
     background-image: url("/img/gradient_bg.svg");
     background-position: center;
