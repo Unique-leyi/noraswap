@@ -19,7 +19,7 @@ const Header = () => {
             </a>
         </div>
         <div>
-            <WalletMultiButton className="bg-gradient-to-r from-sky-500 to-indigo-500  cursor-pointer uppercase text-white py-3 px-3 md:py-3 md:px-10 rounded-md font-bold text-[1rem] hover:shadow-md lg:text-lg xs:text-[0.9rem] font-montserrat" />
+            <WalletMultiButton className="!bg-gradient-to-r !from-sky-500 !to-indigo-500  !cursor-pointer !uppercase !text-white !py-1 !px-3 md:!py-3 md:!px-10 !rounded-md !font-bold !text-[1rem] hover:!shadow-md lg:!text-lg xs:!text-[0.9rem] !font-montserrat" />
         </div>
     </header>
     )

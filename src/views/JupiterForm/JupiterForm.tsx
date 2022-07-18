@@ -7,11 +7,19 @@ import { INPUT_MINT_ADDRESS, OUTPUT_MINT_ADDRESS } from "../../constants";
 
 import styles from "./JupiterForm.module.css";
 import { useJupiterApiContext } from "../../contexts/JupiterApiProvider";
+
+
+// custom-select-box
+import CustomSelect from "../../../components/CustomSelect";
+
+
+
+
 const style = {
   wrapper: `w-screen flex items-center justify-center mt-14`,
   content: `bg-[#191B1F] w-[30rem] rounded-2xl p-4`,
   formHeader: `px-2 flex items-center justify-between font-semibold text-xl`,
-  transferPropContainer: `block w-5/12 bg-transparent px-2 py-3 text-[1.1rem] mx-1 font-bold cursor-pointer uppercase hover:bg-secondary-100 rounded-lg hover:rounded-lg outline-none border-none focus:border-none focus:ring-transparent font-montserrat hover:bg-gray-300 cursor-pointer`,
+  transferPropContainer: `block w-5/12 bg-transparent px-2 py-3 text-[1.1rem] mx-1 font-bold cursor-pointer uppercase hover:bg-secondary-100 rounded-lg hover:rounded-lg outline-none border-none focus:border-none focus:ring-transparent font-montserrat hover:hover:bg-secondary-100  cursor-pointer`,
   transferPropInput: `bg-transparent placeholder:text-[#B2B9D2] outline-none mb-6 w-full text-2xl font-montserrat`,
   currencySelector: `flex w-1/4`,
   currencySelectorContent: `w-full h-min flex justify-between items-center bg-[#2D2F36] hover:bg-[#41444F] rounded-2xl text-xl font-medium cursor-pointer p-2 mt-[-0.2rem]`,
@@ -30,7 +38,103 @@ interface IState {
   slippage: number;
 }
 
+interface EachInput {
+    value: string;
+    error: string;
+  
+}
+
+interface FormInputData {
+  selectOne: EachInput;
+  selectTwo: EachInput;
+}
+
+interface FormDataUser  {
+  [key: number]: FormInputData;
+}
+
+interface errors {}
+
+
 const JupiterForm: FunctionComponent<IJupiterFormProps> = (props) => {
+
+  //Custom-SelectBox
+  // const FormDataUserSelect: FormDataUser = [
+  //    {  
+  //     value: '',
+  //     error: ''
+  //   },
+
+  //    {  
+  //     value: '',
+  //     error: ''
+  //   }
+  // ]
+  
+  // const [FormDataUserSelect, setFormData ] = useState({
+      
+  //   selectOne: {
+  //       value: '',
+  //       error: ''
+  //     },
+
+  //     selectTwo: {
+  //       value: '',
+  //       error: ''
+  //     }
+
+  // });
+
+
+  // const submitHandler = (e: React.FormEvent<HTMLFormElement>) => {
+  //   e.preventDefault();
+
+  //   let errors = useState<errors>({})
+
+  //   for(let key in formData) {
+  //     if(formData[key].value === ''){
+  //       errors[key] = 'Please select one Token';
+  //     }
+  //   }
+
+  //   if(Object.keys(errors).length === 0){
+  //     console.log(formData.selectOne.value, formData.selectTwo.value);
+  //     console.log('submit form');
+     
+  // } else {
+  //    setFormData(prev => {
+  //       let data = {};
+  //       for(let key in errors){
+  //         data[key] = {
+  //           ...prev[key],
+  //           error: errors[key]
+  //         }
+  
+  //       }
+
+  //       return {
+  //         ...prev,
+  //         ...data,
+
+  //       }
+
+  //     });
+
+  //   }
+  // }
+
+  // const changeHandler = (value, name) => {
+  //   setFormData(prev => ({
+  //     ...prev,
+  //     [name]:{
+  //       value,
+  //       error: value !== '' ? '' : prev[name].error
+  //     }
+  //   }));
+  // }
+
+
+  // </-CustomSelectBox
   const wallet = useWallet();
   const { connection } = useConnection();
   const { tokenMap, routeMap, loaded, api } = useJupiterApiContext();
@@ -219,7 +323,6 @@ const JupiterForm: FunctionComponent<IJupiterFormProps> = (props) => {
 
           {/* /Refresh Rate */}
 
-            
 
           {/* Output Token exchange */}
 
@@ -284,22 +387,20 @@ const JupiterForm: FunctionComponent<IJupiterFormProps> = (props) => {
       
       {/* Wallet Button */}
 
+      {/* This is the wallet Button  */}
+
       <div className="my-6 flex justify-center items-center">
-          <WalletMultiButton className="font-montserrat w-full mx-6 md:mx-auto md:w-7/12 font-bold text-lg text-white uppercase rounded-full py-2 px-3 bg-gradient-to-r from-siteblue to-sitepurple shadow-lg transform transition-colors duration-1000 ease-in-out  shadow-cyan-500/50 hover:shadow-cyan-500/70 xs:text-[1rem]"/>
+          <WalletMultiButton className="wallet-adapter-button wallet-adapter-button-trigger"/>
       </div>
-
-      {/* /Wallet Button*/}
-
+      
+        {/* The Swap Button */}
       {routes?.[0] &&
         (() => {
           const route = routes[0];
           if (route) {
             return (
             <div>   
-              <div className="my-10 relative font-montserrat">
-                <ul className="list-none my-14">
-                    <a className="bg-sitepurple  absolute top-2 z-10 right-0 py-1 px-2 rounded-md text-white font-bold">Best Price</a>
-
+              <div className="my-10 font-montserrat">
               <button
                     type="button"
                     disabled={isSubmitting}
@@ -351,35 +452,71 @@ const JupiterForm: FunctionComponent<IJupiterFormProps> = (props) => {
             }
             setIsSubmitting(false);
           }}
-          className="w-full px-4 py-4  focus:ring-indigo-500 selling-list  border-2 border-sky-600 "
+          className="swap-btn"
         >
-          {/* {isSubmitting ? "Swapping.." : "Swap Best Route"} */}
+          {isSubmitting ? "Swapping.." : "Swap Best Route"}
+        </button>
+        </div>
 
-          <div className="my-1 font-montserrat">
-                            <h4 className="flex justify- items-center text-white font-bold text-lg">
-                              {" "}
+        </div>
+
+          );}
+        })()}
+
+         {/* /The Swap Button */}
+
+      {/* /Token Exchanges */}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      {/* /Wallet Button*/}
+
+      {routes?.[0] &&
+        (() => {
+          const route = routes[0];
+          if (route) {
+            return (
+            <div>   
+              <div className="my-10 relative font-montserrat">
+                <ul className="list-none my-14">
+                    <a className="bg-sitepurple  absolute top-1.5 z-10 right-0 py-1 px-2 rounded-md text-white text-[0.9rem] font-semibold">Best Price</a>
+
+              <button  type="button" className="w-full px-4 py-4  focus:ring-indigo-500 selling-list  border-2 border-sky-600 ">
+
+              <div className="my-1 font-montserrat">
+              <h4 className="flex justify- items-center text-white font-bold text-lg">
+                {" "}
                   {route.marketInfos?.map((info) => info.label)}</h4>
-                        </div>
+          </div>
 
-                        <div className="flex justify-start items-center font-montserrat">
-                            <span className="selling-text">Total routes:  {routes?.length}</span>
-                       </div>
+          <div className="flex justify-start items-center font-montserrat">
+              <span className="selling-text">Total routes:  {routes?.length}</span>
+          </div>
+
         </button>
 
-
-                    </ul>
-                  </div>
+          </ul>
+        </div>
               
-
-
-          </div>
+        </div>
             );
           }
         })()}
 
+      {/* /Wallet Button*/}
 
-
-      {/* /Token Exchanges */}
+      
 
      
     </section>

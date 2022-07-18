@@ -45,7 +45,13 @@ module.exports = {
 
       fontFamily: {
         montserrat: ["Montserrat", "sans-serif"],
+      },
+
+      backgroundImage: {
+        'arrow-down': "url('/img/arrow-down.svg')",
       }
+
+      
     },
   },
   variants: {
